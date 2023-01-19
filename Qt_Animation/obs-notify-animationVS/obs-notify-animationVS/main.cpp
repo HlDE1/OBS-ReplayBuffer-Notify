@@ -141,6 +141,9 @@ int main(int argc, char* argv[])
 
 
 	w.setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::SubWindow);
+	w.setAttribute(Qt::WA_ShowWithoutActivating);
+	w.setParent(0);
+
 	w.move(screenRect.left() - wWidth, screenRect.top() + 50);
 	//w.move(screenRect.left(), screenRect.top() + 50);
 	w.setFixedSize(wWidth, wHeight);
@@ -174,6 +177,10 @@ int main(int argc, char* argv[])
 	if (isSound)
 		player->play();
 
+	//QThread::sleep(2000);
+	//QTimer::singleShot(1, &w, SLOT(show()));
 	w.show();
+	w.setFocusPolicy(Qt::NoFocus);
+	w.clearFocus();
 	return a.exec();
 }
