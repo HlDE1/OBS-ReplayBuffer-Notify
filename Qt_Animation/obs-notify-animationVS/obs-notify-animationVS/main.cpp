@@ -89,15 +89,14 @@ int main(int argc, char* argv[])
 
 	QApplication a(argc, argv);
 
-	/*if (argc != 8)
+	if (argc != 8)
 	{
-		//ofstream MyFile("filename.txt");
-		//MyFile << argc;
+
 
 		QTimer::singleShot(1, &a, SLOT(quit()));
 		return a.exec();
 	}
-	*/
+
 
 
 
@@ -111,20 +110,14 @@ int main(int argc, char* argv[])
 	float NotificationVolume = 0.2f;
 	*/
 
-	//obs-notify.exe 2500.00 400.00 false false false 50 KOK
+
 	float animationHoldTime = strtod(argv[1], NULL) == 0 ? 2700 : strtod(argv[1], NULL); //2500.00
 	float animationFadeTime = strtod(argv[2], NULL) == 0 ? 400 : strtod(argv[2], NULL);  //400.00f;
 	bool showNotification = !stricmp(argv[3], "true");
 	bool showPath = !stricmp(argv[4], "true");
 	bool isSound = !stricmp(argv[5], "true");
 	float NotificationVolume = strtod(argv[6], NULL) / 100;
-	QString PathText = argv[7]; //R"(D:\Coding\OBS Plugin\Qt Animation VS\obs-notify-animationVS\x64\Release)";//argv[7];
-
-	//ofstream MyFile("Test.txt");
-	//MyFile << showNotification;// << argv[3] << stricmp(argv[3], "true");//<< showPath << isSound;
-
-	//qDebug("%B", showNotification);
-	//SetTextFile((char*)showNotification);
+	QString PathText = argv[7];
 
 	MainWindow w;
 	QRect screenRect = a.primaryScreen()->geometry();
@@ -144,7 +137,7 @@ int main(int argc, char* argv[])
 
 	player->setAudioOutput(audioOutput);
 	audioOutput->setVolume(NotificationVolume);
-	player->setSource(QUrl::fromLocalFile(R"(D:/Coding/OBS Plugin/Testing2/NotifySound.wav)"));
+	player->setSource(QUrl::fromLocalFile("../../obs-plugins/64bit/obs-notify/NotifySound.wav"));
 
 
 	w.setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::SubWindow);
@@ -169,13 +162,13 @@ int main(int argc, char* argv[])
 				QTimer::singleShot(2000, &a, SLOT(quit()));
 				return;
 			}
-			QTimer::singleShot(animationHoldTime, closeAnimation, SLOT(start()));
+	QTimer::singleShot(animationHoldTime, closeAnimation, SLOT(start()));
 		}));
 
 
 
 	startAnimation->start();
-	
+
 
 
 	if (isSound)

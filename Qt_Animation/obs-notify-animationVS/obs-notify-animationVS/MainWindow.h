@@ -2,7 +2,6 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_MainWindow.h"
-//#include <qsharedmemory.h>
 
 
 class MainWindow : public QMainWindow
@@ -12,10 +11,7 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
-	void TestMemory();
 
 private:
 	Ui::MainWindowClass ui;
-	//QSharedMemory* sharedMemory;
-
 };
