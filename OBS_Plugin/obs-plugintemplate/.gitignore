@@ -8,11 +8,7 @@
 
 .vscode
 .idea
-.vs
 
 # ignore generated files
 *.generated.*
 **/.Brewfile.lock.json
-
-
-/Qt_Animation/
