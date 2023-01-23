@@ -137,7 +137,8 @@ int main(int argc, char* argv[])
 
 	player->setAudioOutput(audioOutput);
 	audioOutput->setVolume(NotificationVolume);
-	player->setSource(QUrl::fromLocalFile("../../obs-plugins/64bit/obs-notify/NotifySound.wav"));
+	//"../../obs-plugins/64bit/obs-notify/NotifySound.wav"
+	player->setSource(QUrl::fromLocalFile("./obs-notify/NotifySound.wav"));
 
 
 	w.setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::SubWindow);

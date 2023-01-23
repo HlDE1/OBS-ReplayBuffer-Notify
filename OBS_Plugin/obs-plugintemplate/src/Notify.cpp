@@ -15,6 +15,7 @@ static void notification_get_defaults(obs_data_t *settings)
 	obs_data_set_default_double(settings, "animationHoldTime_Float", 2500);
 	obs_data_set_default_double(settings, "animationFadeTime_Float", 400);
 	obs_data_set_default_double(settings, "Volume_Float", 50);
+	obs_data_set_default_bool(settings, "ReplayBufferOnStartUp", false);
 }
 
 void NotifyUpdate_Var(obs_data_t *settings)
@@ -33,10 +34,17 @@ void NotifyUpdate_Var(obs_data_t *settings)
 		.NotificationVolume =
 			(float)obs_data_get_double(settings, "Volume_Float"),
 	};
+
+	//pluginIsHide = obs_data_get_bool(settings, "ReplayBufferOnStartUp");
 }
 
 Notify::Notify(obs_data_t *settings, obs_source_t *source)
 {
+	bool ReplayBufferOnStartUp =
+		obs_data_get_bool(settings, "ReplayBufferOnStartUp");
+	if (ReplayBufferOnStartUp)
+		obs_frontend_replay_buffer_start();
+
 	NotifyUpdate_Var(settings);
 }
 Notify::~Notify() {}
@@ -76,16 +84,17 @@ static obs_properties_t *notify_get_properties(void *data)
 				"Show Notification");
 	obs_properties_add_bool(props, "isSound_Bool", "Sound");
 	obs_properties_add_bool(props, "ShowPath_Bool", "Show Recording Path");
-
+	obs_properties_add_bool(props, "ReplayBufferOnStartUp",
+				"Start Replay Buffer on Startup");
 	return props;
 }
 static void Notify_Update(void *data, obs_data_t *settings)
 {
-	//obs_data_set_default_double(settings, "Volume_Float", 50);
 
 	NotifyUpdate_Var(settings);
-	//blog(LOG_INFO, "%f", NotifySettings.NotificationVolume);
 }
+
+
 
 struct obs_source_info notificationSourceStruct = {
 	.id = "replaybuffer_notification",

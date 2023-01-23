@@ -25,10 +25,8 @@ void StartNotification() {
 
 
 
-	//blog(LOG_INFO, "%f", NotifySettings.NotificationVolume);
-
 	char *RecordOutputPath = obs_frontend_get_current_record_output_path();
-	string path = "../../obs-plugins/64bit/obs-notify/";
+	string path =  "../../obs-plugins/64bit/obs-notify/";
 	string Args = format("obs-notify.exe {} {} {} {} {} {} {}", NotifySettings.AnimationHoldTime,
 			     NotifySettings.AnimationFadeTime,
 			     NotifySettings.ShowNotification,
@@ -39,7 +37,6 @@ void StartNotification() {
 	);
 	string command = format("start {}{}", path, Args);
 	//string command = format("start ../../obs-plugins/64bit/TestNotify/obs-notify-animationVS.exe 2500.00 400.00 true false false 5", path, Args);
-
 	blog(LOG_INFO, "%s", command.data());
 	system(command.data());
 	//system("DIR");
@@ -49,11 +46,16 @@ void event_callback(enum obs_frontend_event event, void *private_data)
 {
 	if (event == OBS_FRONTEND_EVENT_REPLAY_BUFFER_STARTED) {
 		blog(LOG_INFO,"HIDE1 OBS_FRONTEND_EVENT_REPLAY_BUFFER_STARTED 22");
+
 	} else if (event == OBS_FRONTEND_EVENT_REPLAY_BUFFER_STOPPED) {
 		blog(LOG_INFO, "HIDE1 OBS_FRONTEND_EVENT_REPLAY_BUFFER_STOPPED");
 	} else if (event == OBS_FRONTEND_EVENT_REPLAY_BUFFER_SAVED) {
-		blog(LOG_INFO, "HIDE1 OBS_FRONTEND_EVENT_REPLAY_BUFFER_SAVED");
-		StartNotification();
+		blog(LOG_INFO, "HIDE1 OBS_FRONTEND_EVENT_REPLAY_BUFFER_SAVED");	
+		obs_source_t *source = obs_get_source_by_name(notificationSourceStruct.get_name(private_data));
+		bool isHidden = obs_source_active(source);
+
+		if (isHidden)
+			StartNotification();
 
 	}
 }
@@ -64,8 +66,6 @@ bool obs_module_load(void)
 	blog(LOG_INFO, "HIDE1 plugin loaded successfully (version %s)",
 	     PLUGIN_VERSION);
 
-
-	//obs_property_t *obs_properties_add_button(props, buttonName, buttonText);
 
 	obs_register_source(&notificationSourceStruct);
 	obs_frontend_add_event_callback(event_callback, 0);
